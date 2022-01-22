@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width", intitial-scale=1.0>
+        <title>Web scraping</title>
+    </head>
+    <body>
+        <dl>
+            <dt>sample1</dt>
+            <dd></dd>
+            <dt>sample2</dt>
+            <dd></dd>
+            <dt>sample3</dt>
+            <dd></dd>
+        </dl>
+        <script>
+            var dd = document.querySelectorAll("dd");
+            var finalArray=[];
+            var xhr= new XMLHttpRequest();
+            xhr.open("GET", "https://cors-anywhere.herokuapp.com/https://time.com", true);
+            xhr.responseType="document";
+            console.log('xhr.readyState, xhr.status',xhr.readyState,xhr.status)
+            xhr.onload = function(){
+                if(xhr.readyState==4 &&xhr.status ==200)
+                {
+                    console.log('xml output is',xhr.responseText)
+                    var response = xhr.responseXML.querySelector("section[data-module_name='Latest Stories']")
+                    .querySelector("ol")
+                    Array.from(response.children).forEach((child, index) => {
+                        var temp =child.querySelector("article").querySelector("div").querySelector("h2").querySelector("a")
+                        finalArray.push(
+                            {
+                                title:child.querySelector("article").querySelector("div").querySelector("h2").querySelector("a").innerHTML,
+                                link:temp.getAttribute("href")
+                            }
+                        )
+                        });      
+                        // console.log('final result is',finalArray)          
+                    }
+            }
+            xhr.onerror= function()
+            {
+                console.errpr(xhr.status,xhr.statusText);
+            }
+            xhr.send();
+        </script>
+    </body>
+    </head>
+</html>
