@@ -4,6 +4,9 @@ Steps to run
 run the following commands
 
 npm install
+
+then
+
 npm start
 
 got to http://localhost:8000/getTimes.com in your chrome browser and refresh
